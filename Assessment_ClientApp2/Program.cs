@@ -8,9 +8,9 @@ namespace Assessment_ClientApp2
     // **************************************************
     //
     // Assessment: Client App 2.0
-    // Author: 
-    // Dated: 
-    // Level (Novice, Apprentice, or Master): 
+    // Author: Trevor W. Sepanik
+    // Dated: 12/01/19
+    // Level (Novice, Apprentice, or Master): Apprentice
     //
     // **************************************************    
 
