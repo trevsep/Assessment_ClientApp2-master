@@ -22,11 +22,22 @@ namespace Assessment_ClientApp2
             bored
         }
 
+        public enum Tribe
+        {
+            none,
+            Okishaba,
+            Rickastley,
+            Referees,
+            Macdaddy
+        }
+
         #region FIELDS
 
         private string _name;
         private int _age;
         private EmotionalState _attitude;
+        private Tribe _tribe;
+        private bool _active;
 
         #endregion
 
@@ -50,6 +61,18 @@ namespace Assessment_ClientApp2
             set { _attitude = value; }
         }
 
+        public Tribe tribe
+        {
+            get { return _tribe;  }
+            set { _tribe = value; }
+        }
+
+        public bool Active
+        {
+            get { return _active;  }
+            set { _active = value; }
+        }
+
         #endregion
 
         #region CONSTRUCTORS
@@ -59,11 +82,13 @@ namespace Assessment_ClientApp2
 
         }
 
-        public Monster(string name, int age, EmotionalState attitude)
+        public Monster(string name, int age, EmotionalState attitude, Tribe tribe, bool active)
         {
             _name = name;
             _age = age;
             _attitude = attitude;
+            _tribe = tribe;
+            _active = active;
         }
 
         #endregion
@@ -106,6 +131,55 @@ namespace Assessment_ClientApp2
             }
                        
             return greeting;
+        }
+
+        public string TribeInfo()
+        {
+            string tribeInfo;
+
+            switch (_tribe)
+            {
+                case Tribe.Okishaba:
+                    tribeInfo = "Welcome to the Okishaba Tribe, where there are no rules, and all we eat are potatoes!";
+                    break;
+
+                case Tribe.Rickastley:
+                    tribeInfo = "Hello, and welcome to the Rickastley tribe! All we do is listen to 'Never gonna give you up' on repeat 24 hours a day! We are a slow tribe.";
+                    break;
+
+                case Tribe.Macdaddy:
+                    tribeInfo = "F*#% BurgerKing!";
+                    break;
+
+                case Tribe.Referees:
+                    tribeInfo = "Here within the Referee tribe, we make it a point to screw over the Lions!";
+                    break;
+
+                default:
+                    tribeInfo = $"{_name} has not chose to be part of a tribe yet, {_name} believes in the tribe of life";
+                    break;
+            }
+
+            return tribeInfo;
+        }
+
+        public string Activeness()
+        {
+            string activeness = Console.ReadLine();
+
+            _active = false;
+
+          if (activeness == "t")
+          {
+                _active = true;
+          }
+          else if (activeness != "t")
+          {
+                _active = false;
+          }
+
+            return activeness;
+          
         }
 
         #endregion

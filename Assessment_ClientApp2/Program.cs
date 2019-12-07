@@ -57,23 +57,31 @@ namespace Assessment_ClientApp2
 
                 new Monster()
                 {
-                    Name = "Sid",
-                    Age = 145,
-                    Attitude = Monster.EmotionalState.happy
+                    Name = "Spud",
+                    Age = 25,
+                    Attitude = Monster.EmotionalState.angry,
+                    tribe = Monster.Tribe.Macdaddy,
+                    Active = false
+                    
+
                 },
 
                 new Monster()
                 {
-                    Name = "Lucy",
-                    Age = 125,
-                    Attitude = Monster.EmotionalState.bored
+                    Name = "Patricia",
+                    Age = 3000,
+                    Attitude = Monster.EmotionalState.sad,
+                    tribe = Monster.Tribe.Okishaba,
+                    Active = true
                 },
 
                 new Monster()
                 {
-                    Name = "Bill",
-                    Age = 934,
-                    Attitude = Monster.EmotionalState.sad
+                    Name = "Omnivore",
+                    Age = 2,
+                    Attitude = Monster.EmotionalState.happy,
+                    tribe = Monster.Tribe.Rickastley,
+                    Active = false
                 }
 
             };
@@ -242,6 +250,7 @@ namespace Assessment_ClientApp2
         static void DisplayAddMonster(List<Monster> monsters)
         {
             bool correct = false;
+            bool correct1 = false;
             string userResponse;
             
 
@@ -252,47 +261,80 @@ namespace Assessment_ClientApp2
             //
             // add monster object property values
             //
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("\tName: ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            newMonster.Name = Console.ReadLine();
             do
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("\tAge: ");
+                Console.Write("\tName: ");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                userResponse = Console.ReadLine();
-                if (int.TryParse(userResponse, out int age))
+                newMonster.Name = Console.ReadLine();
+                do
                 {
-                    newMonster.Age = age;
-                    correct = true;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"\t{userResponse} is not an integer, please enter an integer.");
-                }
-            } while (correct != true);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("\tAttitude - (happy, sad, angry, sleepy, content, or bored): ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Enum.TryParse(Console.ReadLine().ToLower(), out Monster.EmotionalState attitude);
-            newMonster.Attitude = attitude;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\tAge: ");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    userResponse = Console.ReadLine();
+                    if (int.TryParse(userResponse, out int age))
+                    {
+                        newMonster.Age = age;
+                        correct = true;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"\t{userResponse} is not an integer, please enter an integer.");
+                    }
+                } while (correct != true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("\tAttitude - (happy, sad, angry, sleepy, content, or bored): ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Enum.TryParse(Console.ReadLine().ToLower(), out Monster.EmotionalState attitude);
+                newMonster.Attitude = attitude;
 
-            //
-            // echo new monster properties
-            //
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine();
-            Console.WriteLine("\tNew Monster's Properties");
-            Console.WriteLine("\t-------------");
-            MonsterInfo(newMonster);
-            Console.WriteLine();
-            Console.WriteLine("\t-------------");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("\tTribe - (Okishaba, Macdaddy, Rickastley, Referees, or none): ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Enum.TryParse(Console.ReadLine(), out Monster.Tribe tribe);
+                newMonster.tribe = tribe;
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("\tActive: - (Y or N): ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                
+                bool.TryParse(Console.ReadLine(), out bool active);
+                newMonster.Active = active;
+                Console.Clear();
+
+                //
+                // echo new monster properties
+                //
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine();
+                Console.WriteLine("\t***************************");
+                Console.WriteLine("\tNew Monster's Properties");
+                Console.WriteLine("\t***************************");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\t-------------");
+                MonsterInfo(newMonster);
+                Console.WriteLine();
+                Console.WriteLine("\t-------------");
+                Console.Write("Is this information Correct? (y or n): ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                userResponse = Console.ReadLine().ToLower();  
+                if (userResponse == "y")
+                {
+                    monsters.Add(newMonster);
+                    correct1 = false;
+                }
+                else if (userResponse != "y")
+                {
+                    correct1 = true;
+                    Console.Clear();
+                }
+            } while (correct1 != false);
 
             DisplayContinuePrompt();
 
-            monsters.Add(newMonster);
+            
         }
 
         /// <summary>
@@ -363,6 +405,7 @@ namespace Assessment_ClientApp2
         static void DisplayUpdateMonster(List<Monster> monsters)
         {
             bool validResponse = false;
+            bool correct1 = false;
             Monster selectedMonster = null;
 
             do
@@ -377,14 +420,14 @@ namespace Assessment_ClientApp2
                 Console.WriteLine("\t-------------");
                 foreach (Monster monster in monsters)
                 {
-                    Console.WriteLine("\t" + monster.Name);
+                    Console.WriteLine("\t " + monster.Name);
                 }
 
                 //
                 // get user monster choice
                 //
                 Console.WriteLine();
-                Console.Write("\tEnter name:");
+                Console.Write("\tEnter name: ");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 string monsterName = Console.ReadLine();
 
@@ -425,49 +468,80 @@ namespace Assessment_ClientApp2
             Console.ForegroundColor = ConsoleColor.Green;
             string userResponse;
             Console.WriteLine();
-            Console.WriteLine("\tReady to update. Press the Enter to keep the current info.");
-            Console.WriteLine();
-            Console.Write($"\tCurrent Name: {selectedMonster.Name} New Name: ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            userResponse = Console.ReadLine();
-            if (userResponse != "")
+            Console.WriteLine("\tReady to update.");
+            do
             {
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                selectedMonster.Name = userResponse;
-            }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine();
+                Console.Write($"\tCurrent Name: {selectedMonster.Name} -- New Name: ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                userResponse = Console.ReadLine();
+                if (userResponse != "")
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    selectedMonster.Name = userResponse;
+                }
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write($"\tCurrent Age: {selectedMonster.Age} New Age: ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            userResponse = Console.ReadLine();
-            if (userResponse != "")
-            {
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                int.TryParse(userResponse, out int age);
-                selectedMonster.Age = age;
-            }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"\tCurrent Age: {selectedMonster.Age} -- New Age: ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                userResponse = Console.ReadLine();
+                if (userResponse != "")
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    int.TryParse(userResponse, out int age);
+                    selectedMonster.Age = age;
+                }
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write($"\tCurrent Attitude: {selectedMonster.Attitude} New Attitude: ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            userResponse = Console.ReadLine();
-            if (userResponse != "")
-            {
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Enum.TryParse(userResponse, out Monster.EmotionalState attitude);
-                selectedMonster.Attitude = attitude;
-            }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"\tCurrent Attitude: {selectedMonster.Attitude} -- New Attitude: ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                userResponse = Console.ReadLine();
+                if (userResponse != "")
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Enum.TryParse(userResponse, out Monster.EmotionalState attitude);
+                    selectedMonster.Attitude = attitude;
+                }
 
-            //
-            // echo updated monster properties
-            //
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine();
-            Console.WriteLine("\tNew Monster's Properties");
-            Console.WriteLine("\t-------------");
-            MonsterInfo(selectedMonster);
-            Console.WriteLine();
-            Console.WriteLine("\t-------------");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"\tCurrent Tribe: {selectedMonster.tribe} -- New Tribe: ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                userResponse = Console.ReadLine();
+                if (userResponse != "")
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Enum.TryParse(userResponse, out Monster.Tribe tribe);
+                    selectedMonster.tribe = tribe;
+                }
+
+                //
+                // echo updated monster properties
+                //
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine();
+                Console.WriteLine("\tNew Monster's Properties");
+                Console.WriteLine("\t***************************");
+                Console.ForegroundColor = ConsoleColor.Green;
+                MonsterInfo(selectedMonster);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("\t***************************");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Is this information Correct? (y or n): ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                userResponse = Console.ReadLine().ToLower();
+                if (userResponse == "y")
+                {
+                    correct1 = false;
+                }
+                else if (userResponse != "y")
+                {
+                    correct1 = true;
+                    Console.Clear();
+                }
+            } while (correct1 != false);
 
             DisplayContinuePrompt();
         }
@@ -505,6 +579,7 @@ namespace Assessment_ClientApp2
 
             DisplayContinuePrompt();
         }
+
 
         #endregion
 
@@ -595,7 +670,16 @@ namespace Assessment_ClientApp2
             Console.WriteLine($"\tName: {monster.Name}");
             Console.WriteLine($"\tAge: {monster.Age}");
             Console.WriteLine($"\tAttitude: {monster.Attitude}");
+            Console.WriteLine($"\tActive: {monster.Active}");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine();
+            Console.WriteLine("\t***************************");
+            Console.WriteLine($"\tA little about {monster.Name}");
+            Console.WriteLine("\t***************************");
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\t" + monster.Greeting());
+            Console.WriteLine($"\tTribe: {monster.tribe}: " + monster.TribeInfo());
+            
         }
 
         /// <summary>
